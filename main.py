@@ -87,7 +87,6 @@ def get_sql_query(excel_file_name: str, csv_file_name: str, sql_file_name: str, 
         return True
 
     def main():
-        #print(get_insert_values_sql())
         get_insert_values_sql()
 
     main()
