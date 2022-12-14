@@ -1,6 +1,6 @@
 {
-    "EXCEL_FILE_NAME": "SampleData.xlsx",
-    "CSV_FILE_NAME": "Data.csv",
-    "SQL_FILE_NAME": "SAMPLE_DATA.sql",
+    "EXCEL_FILE_NAME": "Employee_Sample_Data.xlsx",
+    "CSV_FILE_NAME": "Employee_Sample_Data.csv",
+    "SQL_FILE_NAME": "Employee_Sample_Data.sql",
     "SQL_TABLE_NAME": "Employee"
 }

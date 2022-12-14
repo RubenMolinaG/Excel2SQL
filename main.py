@@ -3,20 +3,16 @@ import json
 
 def get_json_values() -> dict[str, str]:
     try:
-        json_file = open('./app-info.json', 'r')         
-        data = json.load(json_file)
-
-        return {
-        "EXCEL_FILE_NAME": data["EXCEL_FILE_NAME"],
-        "CSV_FILE_NAME": data["CSV_FILE_NAME"],
-        "SQL_FILE_NAME": data["SQL_FILE_NAME"],
-        "SQL_TABLE_NAME": data["SQL_TABLE_NAME"]
-    }
-
-    except Exception as e:
+        with open('./app-info.json', 'r') as json_file:
+            data = json.load(json_file)
+            return {
+                "EXCEL_FILE_NAME": data["EXCEL_FILE_NAME"],
+                "CSV_FILE_NAME": data["CSV_FILE_NAME"],
+                "SQL_FILE_NAME": data["SQL_FILE_NAME"],
+                "SQL_TABLE_NAME": data["SQL_TABLE_NAME"]
+            }
+    except Exception:
         raise
-    finally:
-        json_file.close()
 
 def get_csv_excel(excel_file_name: str, csv_file_name: str) -> bool:
     wb = load_workbook(filename=f"{excel_file_name}")
@@ -48,7 +44,8 @@ def get_sql_query(excel_file_name: str, csv_file_name: str, sql_file_name: str, 
             raise
         finally:
             wb.close()
-    
+
+
     def get_column_name_sql() -> str:
         list_column_names_excel = get_column_name_excel()
         fields_insert_value = f"INSERT INTO {sql_table_name} ("
@@ -61,7 +58,8 @@ def get_sql_query(excel_file_name: str, csv_file_name: str, sql_file_name: str, 
             counter += 1
         return fields_insert_value
 
-    def get_insert_values_sql() -> str:
+
+    def get_insert_values_sql() -> bool:
         column_headers_name_sql = get_column_name_sql()
         try:
             with open(f'./{csv_file_name}', 'r') as read_csv_file:
@@ -83,27 +81,25 @@ def get_sql_query(excel_file_name: str, csv_file_name: str, sql_file_name: str, 
                             counter += 1
                         write_sql_file.write(f"),\n")
         except Exception:
-            raise Exception
+            raise
         return True
 
-    def main():
-        get_insert_values_sql()
+    return get_insert_values_sql()    
 
-    main()
-    
 
 def main():
+    # Evitar llamar cada vez que queires un valor a la funcion
     EXCEL_FILE_NAME = get_json_values()['EXCEL_FILE_NAME']
-    CSV_FILE_NAME = get_json_values()['CSV_FILE_NAME']
-    SQL_FILE_NAME = get_json_values()['SQL_FILE_NAME']
-    SQL_TABLE_NAME = get_json_values()['SQL_TABLE_NAME']
+    CSV_FILE_NAME   = get_json_values()['CSV_FILE_NAME']
+    SQL_FILE_NAME   = get_json_values()['SQL_FILE_NAME']
+    SQL_TABLE_NAME  = get_json_values()['SQL_TABLE_NAME']
 
-
-    if(get_csv_excel(EXCEL_FILE_NAME, CSV_FILE_NAME)):
-        get_sql_query(EXCEL_FILE_NAME, CSV_FILE_NAME, SQL_FILE_NAME, SQL_TABLE_NAME)
-    else:
-        raise Exception
     
+    if get_csv_excel(EXCEL_FILE_NAME, CSV_FILE_NAME):
+        print(f'{CSV_FILE_NAME} GENERATED.')
+        
+        if get_sql_query(EXCEL_FILE_NAME, CSV_FILE_NAME, SQL_FILE_NAME, SQL_TABLE_NAME):
+            print(f'{SQL_FILE_NAME} GENERATED.')
 
 if __name__ == '__main__':
     main()
