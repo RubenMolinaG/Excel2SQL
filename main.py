@@ -87,14 +87,14 @@ def get_sql_query(excel_file_name: str, csv_file_name: str, sql_file_name: str, 
     return get_insert_values_sql()    
 
 
-def main():
-    # Evitar llamar cada vez que queires un valor a la funcion
-    EXCEL_FILE_NAME = get_json_values()['EXCEL_FILE_NAME']
-    CSV_FILE_NAME   = get_json_values()['CSV_FILE_NAME']
-    SQL_FILE_NAME   = get_json_values()['SQL_FILE_NAME']
-    SQL_TABLE_NAME  = get_json_values()['SQL_TABLE_NAME']
+def main():    
+    json_values = get_json_values()
 
-    
+    EXCEL_FILE_NAME = json_values['EXCEL_FILE_NAME']
+    CSV_FILE_NAME   = json_values['CSV_FILE_NAME']
+    SQL_FILE_NAME   = json_values['SQL_FILE_NAME']
+    SQL_TABLE_NAME  = json_values['SQL_TABLE_NAME']
+
     if get_csv_excel(EXCEL_FILE_NAME, CSV_FILE_NAME):
         print(f'{CSV_FILE_NAME} GENERATED.')
         
